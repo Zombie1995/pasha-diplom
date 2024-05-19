@@ -58,16 +58,19 @@ const NetworkVisualization: React.FC<NetworkExampleProps> = ({
       fy: undefined,
     }));
 
-    const links: LinkData[] = comments.flatMap((comment, i) =>
-      comments
-        .slice(i + 1)
-        .filter((otherComment) => otherComment.class === comment.class)
-        .map((otherComment) => ({
-          source: nodes.find((n) => n.id === comment.id)!,
-          target: nodes.find((n) => n.id === otherComment.id)!,
-          value: 1,
-        }))
-    );
+    const links: LinkData[] = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        if (nodes[i].class === nodes[j].class) {
+          links.push({
+            source: nodes[i],
+            target: nodes[j],
+            value: 1,
+          });
+        }
+      }
+    }
 
     const nodeRadius = 10;
 
