@@ -8,6 +8,6 @@ export const getGraph = async (data: string, type_of_model: string) => {
 
   const owner_id = -parseInt(match[1]);
   const post_id = parseInt(match[2]);
-  return (await $api.post(`/get_graph/${owner_id}/${post_id}/${type_of_model}`))
+  return (await $api.get(`/get_graph/${owner_id}/${post_id}/${type_of_model}`))
     .data;
 };
