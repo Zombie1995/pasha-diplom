@@ -120,6 +120,7 @@ export const GraphCreator = observer(() => {
     <div className="flex gap-6 bg-white p-10 outline outline-[#949cb8] rounded-[20px]">
       <div className="outline outline-blue-500 size-[600px] rounded-md">
         <NetworkVisualization
+          key={graphCreatorStore.link}
           comments={graphCreatorStore.comments}
           width={600}
           height={600}
