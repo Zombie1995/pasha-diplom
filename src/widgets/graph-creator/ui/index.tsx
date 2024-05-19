@@ -1,7 +1,7 @@
 import { graphCreatorStore } from "entities/graph-creator/model";
 import { observer } from "mobx-react-lite";
+import { Loading } from "shared/ui/loading";
 import NetworkVisualization from "shared/ui/network-visualization/ui";
-import { getGraph } from "../api";
 
 export const GraphCreator = observer(() => {
   const models = ["russian_news", "toxicity", "lenta_news"];
@@ -9,11 +9,17 @@ export const GraphCreator = observer(() => {
   return (
     <div className="flex gap-6 bg-white p-10 outline outline-[#949cb8] rounded-[20px]">
       <div className="outline outline-blue-500 size-[600px] rounded-md">
-        <NetworkVisualization
-          comments={graphCreatorStore.comments}
-          width={600}
-          height={600}
-        />
+        {graphCreatorStore.loading ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <Loading className="size-[48px]" color="#000000" />
+          </div>
+        ) : (
+          <NetworkVisualization
+            comments={graphCreatorStore.comments}
+            width={600}
+            height={600}
+          />
+        )}
       </div>
       <div className="flex flex-col gap-4 min-w-[200px]">
         <textarea
@@ -37,13 +43,7 @@ export const GraphCreator = observer(() => {
         <button
           className="outline rounded-sm bg-blue-500 text-white min-h-10"
           onClick={async () => {
-            const comments = await getGraph(
-              graphCreatorStore.link,
-              graphCreatorStore.model
-            );
-            if (!comments) return;
-            graphCreatorStore.setComments(comments);
-            console.log(comments);
+            graphCreatorStore.loadComments();
           }}
         >
           Создать граф
