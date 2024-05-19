@@ -1,9 +1,26 @@
-# To run production: docker-compose up --build -d
 version: "3.4"
 services:
-  vite_docker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 8080:80
+ vite_docker:
+   image: node:alpine
+   container_name: vite_docker
+  #  Specify entrypoint to enter container and run commands by yourself later: docker exec -it vite_docker sh ; and then npm i && npm run dev
+  #  entrypoint: /bin/sh
+   ports:
+     - 8080:80
+   working_dir: /app
+   volumes:
+     - type: bind
+       source: ./
+       target: /app
+   tty: true
+   command: /bin/sh -c "npm i && npm run dev"
+
+# # To run production: docker-compose up --build -d
+# version: "3.4"
+# services:
+#   vite_docker:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - 8080:80

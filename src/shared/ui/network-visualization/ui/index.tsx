@@ -168,6 +168,7 @@ const NetworkVisualization: React.FC<NetworkExampleProps> = ({
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      svg.remove();
     };
   }, [comments, height, width]);
 
