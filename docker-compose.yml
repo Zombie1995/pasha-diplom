@@ -1,0 +1,9 @@
+# To run production: docker-compose up --build -d
+version: "3.4"
+services:
+  vite_docker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
