@@ -1,8 +1,10 @@
 import { makeAutoObservable } from "mobx";
+import { Comment } from "shared/ui/network-visualization";
 
 class GraphCreatorStore {
   link: string = "";
   model: string = "russian_news";
+  comments: Comment[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -14,6 +16,10 @@ class GraphCreatorStore {
 
   setModel = (model: string) => {
     this.model = model;
+  };
+
+  setComments = (comments: Comment[]) => {
+    this.comments = comments;
   };
 }
 
