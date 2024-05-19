@@ -41,8 +41,9 @@ export const GraphCreator = observer(() => {
               graphCreatorStore.link,
               graphCreatorStore.model
             );
+            if (!comments) return;
+            graphCreatorStore.setComments(comments);
             console.log(comments);
-            if (comments) graphCreatorStore.setComments(comments);
           }}
         >
           Создать граф
