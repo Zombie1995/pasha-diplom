@@ -30,7 +30,7 @@ class GraphCreatorStore {
       // Fetch comments from an API or other data source
       const comments = await getGraph(this.link, this.model);
       runInAction(() => {
-        this.setComments(comments);
+        this.setComments(comments ? comments : []);
       });
     } catch (error) {
       console.error("Error loading comments:", error);
