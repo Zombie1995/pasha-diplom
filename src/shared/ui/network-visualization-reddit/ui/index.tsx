@@ -2,23 +2,22 @@ import * as d3 from "d3";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 
-export interface Comment {
+export interface CommentReddit {
   id: string;
-  comment: string;
-  class: string;
+  body: string;
+  parent_id: string | null;
 }
 
-interface NetworkVisualizationProps {
-  comments: Comment[];
+interface NetworkVisualizationRedditProps {
+  comments: CommentReddit[];
   width?: number;
   height?: number;
 }
 
 interface NodeData {
   id: string;
-  group: number;
-  comment: string;
-  class: string;
+  parent_id: string | null;
+  body: string;
   x: number;
   y: number;
   fx?: number;
@@ -31,7 +30,7 @@ interface LinkData {
   value: number;
 }
 
-const NetworkVisualization: React.FC<NetworkVisualizationProps> = ({
+const NetworkVisualizationReddit: React.FC<NetworkVisualizationRedditProps> = ({
   comments,
   width = 800,
   height = 600,
@@ -46,12 +45,10 @@ const NetworkVisualization: React.FC<NetworkVisualizationProps> = ({
     const container = d3.select(containerRef.current);
 
     // Extract nodes and links from the comments data
-    const uniqueClasses = new Set(comments.map((comment) => comment.class));
     const nodes: NodeData[] = comments.map((comment) => ({
       id: comment.id,
-      group: Array.from(uniqueClasses).indexOf(comment.class),
-      comment: comment.comment,
-      class: comment.class,
+      parent_id: comment.parent_id,
+      body: comment.body,
       x: 0,
       y: 0,
       fx: undefined,
@@ -61,11 +58,11 @@ const NetworkVisualization: React.FC<NetworkVisualizationProps> = ({
     const links: LinkData[] = [];
 
     for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        if (nodes[i].class === nodes[j].class) {
+      for (let j = 0; j < nodes.length; j++) {
+        if (nodes[i].parent_id === nodes[j].id) {
           links.push({
-            source: nodes[i],
-            target: nodes[j],
+            source: nodes[j],
+            target: nodes[i],
             value: 1,
           });
         }
@@ -97,7 +94,7 @@ const NetworkVisualization: React.FC<NetworkVisualizationProps> = ({
       .selectAll<SVGLineElement, LinkData>("line")
       .data(links)
       .join("line")
-      .attr("stroke-width", (d) => Math.sqrt(d.value));
+      .attr("stroke-width", 1);
 
     const node = svg
       .append("g")
@@ -107,7 +104,7 @@ const NetworkVisualization: React.FC<NetworkVisualizationProps> = ({
       .data(nodes)
       .join("circle")
       .attr("r", nodeRadius)
-      .attr("fill", (d) => d3.schemeCategory10[d.group])
+      .attr("fill", (d) => (d.parent_id ? "#9b59b6" : "#2980b9"))
       .on("click", (event, d) => handleNodeClick(event, d))
       .call(
         d3
@@ -195,8 +192,8 @@ const NetworkVisualization: React.FC<NetworkVisualizationProps> = ({
           >
             <h3 className="text-lg font-bold mb-2">Node Information</h3>
             <p>ID: {selectedNode.id}</p>
-            <p>Comment: {selectedNode.comment}</p>
-            <p>Class: {selectedNode.class}</p>
+            <p>Body: {selectedNode.body}</p>
+            <p>Parent ID: {selectedNode.parent_id || "None"}</p>
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
               onClick={() => setShowModal(false)}
@@ -210,4 +207,4 @@ const NetworkVisualization: React.FC<NetworkVisualizationProps> = ({
   );
 };
 
-export default NetworkVisualization;
+export default NetworkVisualizationReddit;

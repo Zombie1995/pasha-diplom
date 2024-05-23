@@ -1,11 +1,13 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Comment } from "shared/ui/network-visualization";
-import { getGraph } from "../api";
+import { CommentReddit } from "shared/ui/network-visualization-reddit";
+import { getRedditGraph, getVKGraph } from "../api";
 
 class GraphCreatorStore {
   link: string = "";
   model: string = "russian_news";
-  comments: Comment[] = [];
+  social: string = "vk";
+  comments: Comment[] | CommentReddit[] = [];
   loading: boolean = false;
 
   constructor() {
@@ -20,6 +22,10 @@ class GraphCreatorStore {
     this.model = model;
   };
 
+  setSocial = (social: string) => {
+    this.social = social;
+  };
+
   setComments = (comments: Comment[]) => {
     this.comments = comments;
   };
@@ -28,7 +34,12 @@ class GraphCreatorStore {
     this.loading = true;
     try {
       // Fetch comments from an API or other data source
-      const comments = await getGraph(this.link, this.model);
+      let comments: any = [];
+      if (this.social === "vk") {
+        comments = await getVKGraph(this.link, this.model);
+      } else {
+        comments = await getRedditGraph(this.link, this.model);
+      }
       runInAction(() => {
         this.setComments(comments ? comments : []);
       });
