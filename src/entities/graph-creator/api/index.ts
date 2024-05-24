@@ -18,7 +18,7 @@ export const getRedditGraph = async (data: string, type_of_model: string) => {
 
   if (!match) return;
 
-  const submission_id = -parseInt(match[1]);
+  const submission_id = match[1];
   return (
     await $api.get(`/get_graph_for_reddit/${submission_id}/${type_of_model}`)
   ).data;
