@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
+import { getRandomColor } from "../model";
 
 export interface CommentReddit {
   id: string;
@@ -104,7 +105,7 @@ const NetworkVisualizationReddit: React.FC<NetworkVisualizationRedditProps> = ({
       .data(nodes)
       .join("circle")
       .attr("r", nodeRadius)
-      .attr("fill", (d) => (d.parent_id ? "#9b59b6" : "#2980b9"))
+      .attr("fill", () => getRandomColor())
       .on("click", (event, d) => handleNodeClick(event, d))
       .call(
         d3
