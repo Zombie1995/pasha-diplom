@@ -16,7 +16,8 @@ export type SocialType = "vk" | "reddit";
 class GraphCreatorStore {
   link: string = "";
   model: ModelType = "russian_news";
-  social: string = "vk";
+  // social: string = "vk";
+  social: SocialType = "reddit";
   comments: Comment[] | CommentReddit[] = [];
   loading: boolean = false;
 
