@@ -3,9 +3,19 @@ import { Comment } from "shared/ui/network-visualization";
 import { CommentReddit } from "shared/ui/network-visualization-reddit";
 import { getRedditGraph, getVKGraph } from "../api";
 
+export type ModelType =
+  | "russian_news"
+  | "toxicity"
+  | "lenta_news"
+  | "simple"
+  | "cyberbullying"
+  | "without";
+
+export type SocialType = "vk" | "reddit";
+
 class GraphCreatorStore {
   link: string = "";
-  model: string = "russian_news";
+  model: ModelType = "russian_news";
   social: string = "vk";
   comments: Comment[] | CommentReddit[] = [];
   loading: boolean = false;
@@ -18,11 +28,12 @@ class GraphCreatorStore {
     this.link = link;
   };
 
-  setModel = (model: string) => {
+  setModel = (model: ModelType) => {
     this.model = model;
   };
 
-  setSocial = (social: string) => {
+  setSocial = (social: SocialType) => {
+    this.setModel(social === "vk" ? "russian_news" : "simple");
     this.social = social;
   };
 
