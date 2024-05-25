@@ -5,8 +5,12 @@ import {
 } from "entities/graph-creator/model";
 import { observer } from "mobx-react-lite";
 import { Loading } from "shared/ui/loading";
-import NetworkVisualizationReddit from "shared/ui/network-visualization-reddit/ui";
-import NetworkVisualization from "shared/ui/network-visualization/ui";
+import NetworkVisualizationReddit, {
+  CommentReddit,
+} from "shared/ui/network-visualization-reddit/ui";
+import NetworkVisualization, {
+  Comment,
+} from "shared/ui/network-visualization/ui";
 
 const comments: any = [
   {
@@ -8459,13 +8463,13 @@ export const GraphCreator = observer(() => {
           </div>
         ) : graphCreatorStore.social === "vk" ? (
           <NetworkVisualization
-            // comments={graphCreatorStore.comments as Comment[]}
-            comments={comments1}
+            comments={graphCreatorStore.comments as Comment[]}
+            // comments={comments1}
           />
         ) : (
           <NetworkVisualizationReddit
-            // comments={graphCreatorStore.comments as CommentReddit[]}
-            comments={comments}
+            comments={graphCreatorStore.comments as CommentReddit[]}
+            // comments={comments}
           />
         )}
       </div>
