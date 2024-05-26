@@ -7,7 +7,7 @@ export type ModelType =
   | "russian_news"
   | "toxicity"
   | "lenta_news"
-  | "simple"
+  | "simple_model"
   | "cyberbullying"
   | "without";
 
@@ -34,7 +34,7 @@ class GraphCreatorStore {
   };
 
   setSocial = (social: SocialType) => {
-    this.setModel(social === "vk" ? "russian_news" : "simple");
+    this.setModel(social === "vk" ? "russian_news" : "simple_model");
     this.social = social;
   };
 

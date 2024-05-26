@@ -8451,7 +8451,11 @@ const comments1: any = [
 
 export const GraphCreator = observer(() => {
   const modelsVk: ModelType[] = ["russian_news", "toxicity", "lenta_news"];
-  const modelsReddit: ModelType[] = ["simple", "cyberbullying", "without"];
+  const modelsReddit: ModelType[] = [
+    "simple_model",
+    "cyberbullying",
+    "without",
+  ];
   const socials: SocialType[] = ["vk", "reddit"];
 
   return (
