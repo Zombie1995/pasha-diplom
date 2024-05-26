@@ -1,12 +1,13 @@
 import * as d3 from "d3";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
-import { getRandomColor } from "../model";
+import { getColorFromNumber } from "../model";
 
 export interface CommentReddit {
   id: string;
   body: string;
   parent_id: string | null;
+  class?: string;
 }
 
 interface NetworkVisualizationRedditProps {
@@ -15,6 +16,7 @@ interface NetworkVisualizationRedditProps {
 
 interface NodeData {
   id: string;
+  group: number;
   parent_id: string | null;
   body: string;
   x: number;
@@ -102,8 +104,12 @@ const NetworkVisualizationReddit: React.FC<NetworkVisualizationRedditProps> = ({
     const container = d3.select(containerRef.current);
 
     // Extract nodes and links from the comments data
+    const uniqueClasses = new Set(comments.map((comment) => comment.class));
     const nodes: NodeData[] = comments.map((comment) => ({
       id: comment.id,
+      group: comment.class
+        ? Array.from(uniqueClasses).indexOf(comment.class)
+        : -1,
       parent_id: comment.parent_id,
       body: comment.body,
       x: 0,
@@ -161,7 +167,7 @@ const NetworkVisualizationReddit: React.FC<NetworkVisualizationRedditProps> = ({
       .data(nodes)
       .join("circle")
       .attr("r", nodeRadius)
-      .attr("fill", () => getRandomColor())
+      .attr("fill", (d) => getColorFromNumber(d.group))
       .on("click", (event, d) => handleNodeClick(event, d))
       .call(
         d3

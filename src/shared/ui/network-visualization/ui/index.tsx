@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
+import { getColorFromNumber } from "../model";
 
 export interface Comment {
   id: string;
@@ -163,7 +164,7 @@ const NetworkVisualization: React.FC<NetworkVisualizationProps> = ({
       .data(nodes)
       .join("circle")
       .attr("r", nodeRadius)
-      .attr("fill", (d) => d3.schemeCategory10[d.group])
+      .attr("fill", (d) => getColorFromNumber(d.group))
       .on("click", (event, d) => handleNodeClick(event, d))
       .call(
         d3
