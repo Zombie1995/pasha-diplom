@@ -18,6 +18,7 @@ interface NodeData {
   id: string;
   group: number;
   parent_id: string | null;
+  class?: string;
   body: string;
   x: number;
   y: number;
@@ -111,6 +112,7 @@ const NetworkVisualizationReddit: React.FC<NetworkVisualizationRedditProps> = ({
         ? Array.from(uniqueClasses).indexOf(comment.class)
         : -1,
       parent_id: comment.parent_id,
+      class: comment.class,
       body: comment.body,
       x: 0,
       y: 0,
@@ -304,6 +306,7 @@ const NetworkVisualizationReddit: React.FC<NetworkVisualizationRedditProps> = ({
                 <p>ID: {selectedNode.id}</p>
                 <p>Body: {selectedNode.body}</p>
                 <p>Parent ID: {selectedNode.parent_id || "None"}</p>
+                {selectedNode.class && <p>Class: {selectedNode.class}</p>}
                 <button
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
                   onClick={() => setShowModal(false)}
